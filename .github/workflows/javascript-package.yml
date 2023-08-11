@@ -43,11 +43,10 @@ jobs:
           with:
             node-version: ${{ matrix.node-version }}
         - name: Build a release
-          run: |
-            run: npm install
-            run: npm run build
-            run: npm run package
-            bash create_release.sh $SOURCE_TAG
+          - run: npm install
+          - run: npm run build
+          - run: npm run package
+          - run: bash create_release.sh $SOURCE_TAG
           env:
             SOURCE_TAG: ${{ steps.tag_name.outputs.SOURCE_TAG }}
             SECRET_TOKEN: ${{ secrets.GITHUB_TOKEN }}
