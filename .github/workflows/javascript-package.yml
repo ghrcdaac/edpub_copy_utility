@@ -31,24 +31,25 @@ jobs:
       matrix:
         node-version: ['16.x' ]
     steps:
-        - uses: actions/checkout@v2
-        - name: Get tag version
-          id: tag_name
-          run: echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
-        - name: Get repo name
-          id: repo_name
-          run: echo ::set-output name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | sed -e "s/:refs//")
-        - name: Use Node.js ${{ matrix.node-version }}
-          uses: actions/setup-node@v2
-          with:
-            node-version: ${{ matrix.node-version }}
-        - name: Build a release
-          - run: npm install
-          - run: npm run build
-          - run: npm run package
-          - run: bash create_release.sh $SOURCE_TAG
-          env:
-            SOURCE_TAG: ${{ steps.tag_name.outputs.SOURCE_TAG }}
-            SECRET_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            GITHUB_REPO: ${{ steps.repo_name.outputs.REPOSITORY_NAME }}
+      - uses: actions/checkout@v2
+      - name: Get tag version
+        id: tag_name
+        run: echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
+      - name: Get repo name
+        id: repo_name
+        run: echo ::set-output name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | sed -e "s/:refs//")
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Build a release
+        run: |
+          npm install
+          npm run build
+          npm run package
+          bash create_release.sh $SOURCE_TAG
+        env:
+          SOURCE_TAG: ${{ steps.tag_name.outputs.SOURCE_TAG }}
+          SECRET_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ steps.repo_name.outputs.REPOSITORY_NAME }}
               
