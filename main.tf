@@ -1,5 +1,5 @@
 locals {
-  zip_path = "./dist/src.zip"
+  zip_path = "${path.module}/dist/src.zip"
 }
 
 data "aws_iam_policy_document" "assume_lambda_role" {
@@ -75,8 +75,8 @@ resource "aws_lambda_function" "edpub_copy_file_utility" {
   function_name    = "${var.prefix}-edpub_copy_file_utility"
   role             = aws_iam_role.edpub_copy_utility_role.arn
   handler          = "index.handler"
-  source_code_hash = filemd5(local.zip_path)
-  runtime          = "nodejs18.x"
+  source_code_hash = filebase64sha256(local.zip_path)
+  runtime          = "nodejs16.x"
   timeout          = 60
 
   environment {
