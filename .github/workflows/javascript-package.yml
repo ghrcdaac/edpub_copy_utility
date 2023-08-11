@@ -16,12 +16,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-          uses: actions/setup-node@v3
-          with:
-            node-version: ${{ matrix.node-version }}
-            - run: npm run install
-            - run: npm run build
-            - run: npm run package
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run build
+      - run: npm run package
 
   create_release:
     needs: build
@@ -39,12 +39,12 @@ jobs:
           id: repo_name
           run: echo ::set-output name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | sed -e "s/:refs//")
         - name: Use Node.js ${{ matrix.node-version }}
-            uses: actions/setup-node@v3
-            with:
-              node-version: ${{ matrix.node-version }}
+          uses: actions/setup-node@v2
+          with:
+            node-version: ${{ matrix.node-version }}
         - name: Build a release
           run: |
-            run: npm run install
+            run: npm install
             run: npm run build
             run: npm run package
             bash create_release.sh $SOURCE_TAG
