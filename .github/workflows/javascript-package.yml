@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm run install
+      - run: npm install
       - run: npm run build
       - run: npm run package
 
@@ -44,7 +44,7 @@ jobs:
             node-version: ${{ matrix.node-version }}
         - name: Build a release
           run: |
-            run: npm run install
+            run: npm install
             run: npm run build
             run: npm run package
             bash create_release.sh $SOURCE_TAG
