@@ -20,7 +20,7 @@ function create_zip_file() {
   rm -rf ${DESTINATION_DIR}
   mkdir -p ${BUILD_DIR} ${DESTINATION_DIR}
 #  cp -r modules ${BUILD_DIR}
-  ls dist/
+  ls -al dist/
   find . -name src.zip
   cp ./dist/src.zip ${BUILD_DIR}
   cp *tf ${BUILD_DIR}
