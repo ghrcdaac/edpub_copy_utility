@@ -19,9 +19,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install
-      - run: npm run build
-      - run: npm run package
+        run: |
+          npm install
+          npm run build
+          npm run package
 
   create_release:
     needs: build
@@ -47,8 +48,6 @@ jobs:
           npm install
           npm run build
           npm run package
-          pwd
-          find -name src.zip
           bash create_release.sh $SOURCE_TAG
         env:
           SOURCE_TAG: ${{ steps.tag_name.outputs.SOURCE_TAG }}
