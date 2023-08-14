@@ -12,8 +12,6 @@ export RELEASE_NAME=`basename $GITHUB_REPO`
    https://api.github.com/repos/$GITHUB_REPO/releases |grep \"url\" |grep releases |sed -e 's/.*\(https.*\)\"\,/\1/'| sed -e 's/api/uploads/')
 
 
-
-## Build TF modules that require source building
 function create_zip_file() {
   TEMP_DIR=${PWD}/tmp
   mkdir TEMP_DIR
@@ -25,22 +23,6 @@ function create_zip_file() {
   mv "${RELEASE_NAME}".zip ../
   cd ../
   rm -rf TEMP_DIR
-
-
-#  BUILD_DIR=/tmp/${RELEASE_NAME}
-#  DESTINATION_DIR=${PWD}/dist
-#  rm -rf ${DESTINATION_DIR}
-#  mkdir -p ${BUILD_DIR} ${DESTINATION_DIR}
-#  cp -r modules ${BUILD_DIR}
-#  ls -al dist/
-#  find . -name src.zip
-#  cp ./dist/src.zip ${BUILD_DIR}
-#  cp *tf ${BUILD_DIR}
-#  cd ${BUILD_DIR}
-#  zip -r9 ${RELEASE_NAME}.zip .
-#  mv ${RELEASE_NAME}.zip ${DESTINATION_DIR}/.
-#  cd $DESTINATION_DIR
-#  rm -rf ${BUILD_DIR}
 }
 
 
