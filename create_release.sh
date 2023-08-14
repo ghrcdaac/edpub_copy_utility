@@ -11,7 +11,7 @@ export RELEASE_NAME=`basename $GITHUB_REPO`
    -X POST\
    https://api.github.com/repos/$GITHUB_REPO/releases |grep \"url\" |grep releases |sed -e 's/.*\(https.*\)\"\,/\1/'| sed -e 's/api/uploads/')
 
-
+## Test Change to trigger yml
 function create_zip_file() {
   TEMP_DIR=${PWD}/tmp
   mkdir TEMP_DIR
