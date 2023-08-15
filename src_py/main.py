@@ -25,8 +25,6 @@ def get_keys(paginator, bucket):
 
 
 def scan_ed_pub():
-    sts_client = boto3.client('sts')
-    destination_account = sts_client.get_caller_identity().get('Account')
     paginator = s3_client.get_paginator('list_objects_v2')
     src_keys = get_keys(paginator, source_bucket)
     missing_keys = src_keys.difference(get_keys(paginator, destination_bucket))
@@ -36,20 +34,21 @@ def scan_ed_pub():
         futures = []
         for key in missing_keys:
             futures.append(
-                executor.submit(
-                    s3_client.copy_object,
-                    Bucket=source_bucket,
-                    CopySource={'Bucket': source_bucket, 'Key': key},
-                    ExpectedBucketOwner=destination_account,
-                    ExpectedSourceBucketOwner=ed_pub_account_id,
-                    Key=key
-                )
+                executor.submit(transfer_wrapper, key)
             )
 
-            for future in concurrent.futures.as_completed(futures):
-                responses.append(future.result())
+        for future in concurrent.futures.as_completed(futures):
+            responses.append(future.result())
 
     return responses
+
+
+def transfer_wrapper(key):
+    return s3_client.put_object(
+        Bucket=destination_bucket,
+        Body=s3_client.get_object(Bucket=source_bucket, Key=key).get('Body').read(),
+        Key=key
+    )
 
 
 def handle_s3_event_message(event):
