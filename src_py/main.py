@@ -3,7 +3,8 @@ import os
 import boto3
 import concurrent.futures
 
-client = boto3.client('s3')
+s3_client = boto3.client('s3')
+ed_pub_account_id = os.getenv('EDPUB_ACCOUNT_ID')
 source_bucket = os.getenv('EDPUB_BUCKET')
 destination_bucket = os.getenv('DAAC_BUCKET')
 region = os.getenv('REGION')
@@ -24,8 +25,9 @@ def get_keys(paginator, bucket):
 
 
 def scan_ed_pub():
-    paginator = client.get_paginator('list_objects_v2')
-
+    sts_client = boto3.client('sts')
+    destination_account = sts_client.get_caller_identity().get('Account')
+    paginator = s3_client.get_paginator('list_objects_v2')
     src_keys = get_keys(paginator, source_bucket)
     missing_keys = src_keys.difference(get_keys(paginator, destination_bucket))
 
@@ -35,9 +37,11 @@ def scan_ed_pub():
         for key in missing_keys:
             futures.append(
                 executor.submit(
-                    client.copy_object,
+                    s3_client.copy_object,
                     Bucket=source_bucket,
                     CopySource={'Bucket': source_bucket, 'Key': key},
+                    ExpectedBucketOwner=destination_account,
+                    ExpectedSourceBucketOwner=ed_pub_account_id,
                     Key=key
                 )
             )
@@ -50,7 +54,7 @@ def scan_ed_pub():
 
 def handle_s3_event_message(event):
     object_key = event.get('Records')[0].get('s3').get('object').get('key')
-    return client.copy_object(
+    return s3_client.copy_object(
         Bucket=destination_bucket,
         CopySource={
             'Bucket': source_bucket,
@@ -67,3 +71,7 @@ def handler(event, context):
         ret = scan_ed_pub()
 
     return ret
+
+
+if __name__ == '__main__':
+    pass

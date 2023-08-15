@@ -81,6 +81,7 @@ resource "aws_lambda_function" "edpub_copy_file_utility" {
 
   environment {
     variables = {
+      EDPUB_ACCOUNT_ID = var.edpub_account_id
       EDPUB_BUCKET = var.edpub_bucket
       DAAC_BUCKET  = var.daac_bucket
       REGION       = var.region
