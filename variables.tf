@@ -40,3 +40,12 @@ variable "scan_cron_value" {
   type        = string
   default     = "rate(1 day)"
 }
+
+variable "lambda_runtime" {
+  type = string
+  default = "javascript"
+  validation {
+    condition = var.lambda_runtime == "javascript" || var.lambda_runtime == "python"
+    error_message = "Lambda type must be javascript or python."
+  }
+}
