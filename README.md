@@ -14,6 +14,7 @@ This terraform module is provided as a template for DAACs to use in combination 
 The EDPub Copy File Utility uses the following Node and Terraform versions- also listed in .nvmrc and .terraform-version respectively:
 ```
 Node: v18.14.1
+Python: 3.8
 Terraform: v0.13.6
 ```
 
@@ -21,13 +22,22 @@ Terraform: v0.13.6
 This module can be deployed to any environment; however, it should be deployed in the us-west-2 AWS region; otherwise, additional modifications to the lambda source may be necessary.
 
 ### How To Build
+The module supports both javascript and python lambda runtimes. The benefit of the python deployment
+is that it is easy to modify the source code for testing in the aws lambda web console but instructrions for building 
+both deployments are listed here. The runtime can be configured by setting the `lambda_runtime` terraform
+variable.
+
+#### Javascript
 If you make any changes to the `src/index.js` file, you will need to rebuild the lambda package. To build the module, you will need to run the following commands:
 ```
 npm install --include=dev
 npm run build
 npm run package
 ```
-Running the above command will build the source and dependencies to a zip file which will be used for your deployment. 
+#### Python
+For local deployments, after you have modified the `./src_py/main.py` file just run `python create_package.py`
+
+Running the above commands will build the source and dependencies to a zip file which will be used for your deployment. 
 
 ### How To Deploy
 To deploy, you will need to define the following variables in a .tfvars file:
