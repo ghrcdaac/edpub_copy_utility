@@ -43,7 +43,7 @@ variable "scan_cron_value" {
 
 variable "lambda_runtime" {
   type = string
-  default = "javascript"
+  default = "python"
   validation {
     condition = var.lambda_runtime == "javascript" || var.lambda_runtime == "python"
     error_message = "Lambda type must be javascript or python."
