@@ -1,5 +1,5 @@
 locals {
-  zip_path = "${path.module}/dist/src.zip"
+  zip_path = var.lambda_runtime == "javascript" ? "${path.module}/dist/src.zip" : "${path.module}/package.zip"
 }
 
 data "aws_iam_policy_document" "assume_lambda_role" {
@@ -74,13 +74,14 @@ resource "aws_lambda_function" "edpub_copy_file_utility" {
   filename         = local.zip_path
   function_name    = "${var.prefix}-edpub_copy_file_utility"
   role             = aws_iam_role.edpub_copy_utility_role.arn
-  handler          = "index.handler"
+  handler          = var.lambda_runtime == "javascript" ? "index.handler" : "src.main.handler"
   source_code_hash = filebase64sha256(local.zip_path)
-  runtime          = "nodejs16.x"
+  runtime          = var.lambda_runtime == "javascript" ? "nodejs16.x" : "python3.8"
   timeout          = 60
 
   environment {
     variables = {
+      EDPUB_ACCOUNT_ID = var.edpub_account_id
       EDPUB_BUCKET = var.edpub_bucket
       DAAC_BUCKET  = var.daac_bucket
       REGION       = var.region

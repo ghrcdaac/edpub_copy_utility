@@ -1,2 +1,6 @@
+.idea/
 dist/
 node_modules/
+package.zip
+__pycache__/
+

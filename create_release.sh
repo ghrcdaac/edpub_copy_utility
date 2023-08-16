@@ -18,6 +18,7 @@ function create_zip_file() {
   rm -rf "${TEMP_DIR}"
   cp -- *.tf TEMP_DIR
   cp -r dist/ TEMP_DIR
+  cp package.zip TEMP_DIR
   cd TEMP_DIR
   zip -r9 "${RELEASE_NAME}.zip" .
   mv "${RELEASE_NAME}".zip ../
