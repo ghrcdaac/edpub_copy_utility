@@ -48,14 +48,14 @@ def scan_ed_pub(s3_client):
 
 
 def handle_s3_event_message(event, s3_client):
-    object_key = event.get('Records')[0].get('s3').get('object')
+    object_key = event.get('Records')[0].get('s3').get('object').get('key')
     s3_client.copy_object(
         Bucket=destination_bucket,
         CopySource={
             'Bucket': source_bucket,
             'Key': object_key
         },
-        Key=object_key.get('key').split('/', 2)[-1]
+        Key=object_key.split('/', 2)[-1]
     )
 
 
