@@ -55,7 +55,7 @@ def handle_s3_event_message(event, s3_client):
             'Bucket': source_bucket,
             'Key': object_key
         },
-        Key=f'pub/{object_key.split("/", 2)[-1]}'
+        Key=f'{object_key.split("/", 2)[-1]}'
     )
 
 
