@@ -13,9 +13,9 @@ This terraform module is provided as a template for DAACs to use in combination 
 ### Pre-requisites
 The EDPub Copy File Utility uses the following Node and Terraform versions- also listed in .nvmrc and .terraform-version respectively:
 ```
-Node: v18.14.1
-Python: 3.8
-Terraform: v0.13.6
+Node: v22.14.0
+Python: 3.13
+Terraform: v1.5.3
 ```
 
 ### Where To Deploy
@@ -23,7 +23,7 @@ This module can be deployed to any environment; however, it should be deployed i
 
 ### How To Build
 The module supports both javascript and python lambda runtimes. The benefit of the python deployment
-is that it is easy to modify the source code for testing in the aws lambda web console but instructrions for building 
+is that it is easy to modify the source code for testing in the aws lambda web console but instructions for building
 both deployments are listed here. The runtime can be configured by setting the `lambda_runtime` terraform
 variable.
 
