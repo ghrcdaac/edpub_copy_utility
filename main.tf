@@ -76,7 +76,7 @@ resource "aws_lambda_function" "edpub_copy_file_utility" {
   role             = aws_iam_role.edpub_copy_utility_role.arn
   handler          = var.lambda_runtime == "javascript" ? "index.handler" : "src.main.handler"
   source_code_hash = filebase64sha256(local.zip_path)
-  runtime          = var.lambda_runtime == "javascript" ? "nodejs16.x" : "python3.8"
+  runtime          = var.lambda_runtime == "javascript" ? "nodejs22.x" : "python3.13"
   timeout          = 60
 
   environment {
