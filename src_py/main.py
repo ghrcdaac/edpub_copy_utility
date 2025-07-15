@@ -60,6 +60,7 @@ def handle_s3_event_message(event, s3_client):
 
 
 def handler(event, context):
+    print(f'[EVENT]\n{event}')
     s3_client = boto3.client('s3')
     if event.get('Records', None):
         handle_s3_event_message(event, s3_client)
