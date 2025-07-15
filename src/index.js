@@ -44,7 +44,8 @@ async function triggeredByEDPubCopy(event) {
   // There should only ever be 1 instance of Records for an s3 object trigger
   // event. As such anything more is considered an error.
   if (event.Records.length > 1) return Error('Event should only contain 1 record.');
-  const sourceKey = event.Records[0].s3.object.key;
+  // The S3 event trigger will replace spaces in the key with '+' which may cause issues if not properly handled
+  const sourceKey = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " "));
   // Strip EDPub prefix (/daac/<daac_shortname>/)from key
   const destinationKey = sourceKey.split('/').slice(2).join('/');
   const command = new CopyObjectCommand({
