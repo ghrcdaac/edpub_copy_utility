@@ -2,6 +2,7 @@ import os
 
 import boto3
 import concurrent.futures
+from urllib.parse import unquote_plus
 
 ed_pub_account_id = os.getenv('EDPUB_ACCOUNT_ID')
 source_bucket = os.getenv('EDPUB_BUCKET')
@@ -48,7 +49,8 @@ def scan_ed_pub(s3_client):
 
 
 def handle_s3_event_message(event, s3_client):
-    object_key = event.get('Records')[0].get('s3').get('object').get('key')
+    # The S3 event trigger will replace spaces in the key with '+' which may cause issues if not properly handled
+    object_key = unquote_plus(event.get('Records')[0].get('s3').get('object').get('key'))
     s3_client.copy_object(
         Bucket=destination_bucket,
         CopySource={
@@ -60,7 +62,7 @@ def handle_s3_event_message(event, s3_client):
 
 
 def handler(event, context):
-    print(f'[EVENT]\n{event}')
+    print(f'[EVENT] {event}')
     s3_client = boto3.client('s3')
     if event.get('Records', None):
         handle_s3_event_message(event, s3_client)
