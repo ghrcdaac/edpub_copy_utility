@@ -4,7 +4,7 @@
   "description": "DAAC managed utiltity for copying files from EDPub to DAAC internal buckets.",
   "main": "src/index.js",
   "engines": {
-    "node": ">=22"
+    "node": ">=20"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
