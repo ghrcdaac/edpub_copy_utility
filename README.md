@@ -13,7 +13,7 @@ This terraform module is provided as a template for DAACs to use in combination 
 ### Pre-requisites
 The EDPub Copy File Utility uses the following Node and Terraform versions- also listed in .nvmrc and .terraform-version respectively:
 ```
-Node: v22.14.0
+Node: v20.19.4
 Python: 3.13
 Terraform: v1.5.3
 ```
