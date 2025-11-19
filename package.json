@@ -1,6 +1,6 @@
 {
   "name": "edpub_copy_file_utility",
-  "version": "1.0.0",
+  "version": "2.3.0",
   "description": "DAAC managed utiltity for copying files from EDPub to DAAC internal buckets.",
   "main": "src/index.js",
   "engines": {
