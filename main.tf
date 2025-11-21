@@ -45,7 +45,7 @@ data "aws_iam_policy_document" "edpub_copy_utility_policy_document" {
     actions = [
       "s3:GetObject",
       "s3:GetObjectTagging",
-      "s3:GetObjectAcl"
+      "s3:GetObjectAcl",
       "s3:ListBucket"
     ]
     resources = [
